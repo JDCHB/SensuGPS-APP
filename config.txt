@@ -1,0 +1,134 @@
+Pasos para svelte movil:
+
+
+npx sv create my-app
+
+┌  Welcome to the Svelte CLI! (v0.8.0)
+│
+◇  Which template would you like?
+│  SvelteKit minimal
+│
+◇  Add type checking with TypeScript?
+│  No
+│
+◆  Project created
+│
+◇  What would you like to add to your project? (use arrow keys / space bar)
+│  none
+│
+◇  Which package manager do you want to install dependencies with?
+│  npm
+│
+◆  Successfully installed dependencies
+│
+
+npm install @sveltejs/adapter-static
+npm install @capacitor/core @capacitor/cli @capacitor/android
+
+
+
+Crear en routes:
++layout.js
+y poner: export const prerender = true;
+
+en svelte.cofig.js pon:
+import adapter from '@sveltejs/adapter-static';
+
+export default {
+	kit: {
+		adapter: adapter({
+			// default options are shown. On some platforms
+			// these options are set automatically — see below
+			pages: 'dist',
+			assets: 'dist',
+			fallback: null,
+			precompress: false,
+			strict: true
+		})
+	}
+};
+
+
+
+Luego: 
+
+npx cap init
+npm run build 
+npx cap sync -->Sincronizar en caso de que cambies algo alla (hacelo luego del build)
+npx cap add android  
+Instalar: https://developer.android.com/studio?hl=es-419
+npx cap open android
+
+
+
+
+
+
+Ahora dentro de open android:
+tools, device manager, 
+create device
+Pixel 5 o 6
+Android 13 o 14(Download si aún no está instalada)
+dar play
+
+
+para verlo al celular:
+conecte, por celular, tener modo desarrollaro, tener activado depuracion por us
+tener instalado enlace movil.
+
+
+
+-------------------------------------------Tener apk:--------------------------------------------------------------------------------------
+instalar jdk
+en incio (tecla window), escribir variable de entorno
+nueva
+Nombre: JAVA_HOME
+valor: C:\Program Files\Java\jdk-17
+
+Busca la variable path , editar y agregar: %JAVA_HOME%\bin  y C:\Program Files\Java\jdk-17\bin
+
+aceptar, y reiniciar visual
+
+
+entrar a android app build.gradle y tambien en capacitor.build.gradle y capacitor-cordova-android-plugins y pegar 
+compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+}
+
+
+en my-app:
+keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+
+
+Campo	Valor que debes poner
+Key store password	🔐 (la que tú escribiste al inicio)
+Key alias	my-key-alias
+Key password	🔐 (la misma que el keystore)
+
+
+dentro de la carpeta android: 
+./gradlew assembleRelease
+
+
+& "C:\Users\User\AppData\Local\Android\Sdk\build-tools\34.0.0\apksigner.bat" sign `
+--ks "my-release-key.keystore" `
+--ks-key-alias "my-key-alias" `
+--ks-pass pass:botci123 `
+--out "app-release-final.apk" `
+"android/app/build/outputs/apk/release/app-release.apk"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+npm install cordova-plugin-file-opener2
