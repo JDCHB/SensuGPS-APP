@@ -1,1 +1,6 @@
+✅ 1. Instalar el plugin de geolocalización si no lo has hecho ya
 npm install @capacitor/geolocation
+
+@capacitor/storage: Si necesitas almacenar datos en el dispositivo de manera persistente (por ejemplo, para la sesión del usuario, configuraciones, etc.), esta es una opción útil.
+npm install @capacitor/storage
+
