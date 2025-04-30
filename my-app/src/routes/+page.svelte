@@ -61,7 +61,7 @@
         }
 
         obtenerUbicacionYEnviar();
-        intervalo = setInterval(obtenerUbicacionYEnviar, 15000);
+        intervalo = setInterval(obtenerUbicacionYEnviar, 5000);
     });
 
     onDestroy(() => clearInterval(intervalo));
