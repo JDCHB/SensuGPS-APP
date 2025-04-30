@@ -5,48 +5,44 @@
     let lat = "";
     let lon = "";
     let intervalo = null;
+    const discapacitado_id = 12;
 
-    const discapacitado_id = 12; // Coloca el ID real aquí
+    // Mueve toda la lógica de geolocalización aquí
+    onMount(async () => {
+        async function obtenerUbicacionYEnviar() {
+            try {
+                const position = await Geolocation.getCurrentPosition();
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
 
-    async function obtenerUbicacionYEnviar() {
-        try {
-            const position = await Geolocation.getCurrentPosition();
-            lat = position.coords.latitude;
-            lon = position.coords.longitude;
+                console.log("Ubicación actual:", lat, lon);
 
-            console.log("Ubicación actual:", lat, lon);
-
-            const res = await fetch(
-                `https://tu-api.com/discapacitado/${discapacitado_id}/ubicacion`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
+                const res = await fetch(
+                    `https://tu-api.com/discapacitado/${discapacitado_id}/ubicacion`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            latitud: lat,
+                            longitud: lon,
+                        }),
                     },
-                    body: JSON.stringify({
-                        latitud: lat,
-                        longitud: lon,
-                    }),
-                },
-            );
-
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(
-                    errorData.detail || "Error al actualizar ubicación",
                 );
+
+                if (!res.ok) throw new Error("Error al actualizar ubicación");
+
+                const data = await res.json();
+                console.log("Respuesta del servidor:", data);
+            } catch (error) {
+                console.error("Error:", error);
             }
-
-            const data = await res.json();
-            console.log("Respuesta del servidor:", data);
-        } catch (error) {
-            console.error("Error al obtener o enviar ubicación:", error);
         }
-    }
 
-    onMount(() => {
+        // Ejecuta inmediatamente y cada 15 segundos
         obtenerUbicacionYEnviar();
-        intervalo = setInterval(obtenerUbicacionYEnviar, 15000); // cada 15 segundos
+        intervalo = setInterval(obtenerUbicacionYEnviar, 15000);
     });
 
     onDestroy(() => {
