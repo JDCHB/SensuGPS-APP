@@ -18,7 +18,7 @@
                 console.log("Ubicación actual:", lat, lon);
 
                 const res = await fetch(
-                    `https://tu-api.com/discapacitado/${discapacitado_id}/ubicacion`,
+                    `https://proyectomascotas.onrender.com/${discapacitado_id}`,
                     {
                         method: "PUT",
                         headers: {
