@@ -119,32 +119,129 @@
 </script>
 
 {#if error}
-    <div class="error-box">
-        <h3>{error.message}</h3>
-        {#if isMobile}
-            <p><strong>Dispositivo:</strong> Móvil 📱</p>
-        {:else}
-            <p><strong>Dispositivo:</strong> Escritorio 💻</p>
-        {/if}
+    <div class="error-box" role="alert">
+        <h3>❌ {error.message}</h3>
+        <p class="device-info">
+            <strong>Dispositivo:</strong>
+            {#if isMobile}
+                Móvil 📱
+            {:else}
+                Escritorio 💻
+            {/if}
+        </p>
+
         {#if error.details.serverError}
-            <pre>{JSON.stringify(error.details.serverError, null, 2)}</pre>
+            <div class="error-details">
+                <strong>Detalles del servidor:</strong>
+                <pre>{JSON.stringify(error.details.serverError, null, 2)}</pre>
+            </div>
         {/if}
     </div>
 {/if}
 
-<p>Latitud: {lat || "Obteniendo..."}</p>
-<p>Longitud: {lon || "Obteniendo..."}</p>
+<div class="location-info" role="status">
+    <h2>📍 Ubicación actual</h2>
+    <p><strong>Latitud:</strong> {lat || "Obteniendo ubicación..."}</p>
+    <p><strong>Longitud:</strong> {lon || "Obteniendo ubicación..."}</p>
+
+    {#if lat && lon}
+        <div class="status success">✅ Ubicación enviada correctamente</div>
+    {:else}
+        <div class="status loading">⌛ Enviando ubicación...</div>
+    {/if}
+</div>
 
 <style>
-    .error-box {
-        background: #fff3e0;
-        border-left: 4px solid #ffa000;
-        padding: 1rem;
-        margin: 1rem 0;
+    :global(body) {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f0f4f8;
     }
-    pre {
-        background: #f5f5f5;
+
+    .error-box {
+        background-color: #ffebee;
+        border-left: 5px solid #d32f2f;
+        margin: 1rem auto;
+        padding: 1rem;
+        border-radius: 8px;
+        max-width: 600px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        color: #b71c1c;
+    }
+
+    .error-box h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .device-info {
+        font-size: 1rem;
+    }
+
+    .error-details {
+        margin-top: 0.5rem;
+        background-color: #ffcdd2;
         padding: 0.5rem;
-        font-size: 0.8rem;
+        border-radius: 4px;
+        overflow-x: auto;
+    }
+
+    .location-info {
+        background-color: #ffffff;
+        border-left: 5px solid #1976d2;
+        margin: 1.5rem auto;
+        padding: 1.2rem;
+        border-radius: 10px;
+        max-width: 600px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        color: #0d47a1;
+        font-size: 1.1rem;
+        text-align: center;
+    }
+
+    .location-info h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #1565c0;
+    }
+
+    .location-info p {
+        margin: 0.5rem 0;
+    }
+
+    .status {
+        margin-top: 1rem;
+        font-weight: bold;
+        padding: 0.6rem;
+        border-radius: 6px;
+    }
+
+    .status.success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 2px solid #66bb6a;
+    }
+
+    .status.loading {
+        background-color: #fffde7;
+        color: #f9a825;
+        border: 2px dashed #fdd835;
+    }
+
+    @media (max-width: 600px) {
+        .error-box,
+        .location-info {
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        .location-info h2 {
+            font-size: 1.3rem;
+        }
+
+        .status {
+            font-size: 1rem;
+        }
     }
 </style>

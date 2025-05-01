@@ -102,9 +102,9 @@ keytool -genkeypair -v -keystore my-release-key.keystore -alias my-key-alias -ke
 
 
 Campo	Valor que debes poner
-Key store password	🔐 (la que tú escribiste al inicio)
-Key alias	my-key-alias
-Key password	🔐 (la misma que el keystore)
+Key store password	🔐 (la que tú escribiste al inicio) Juan123
+Key alias	my-key-alias Juan
+Key password	🔐 (la misma que el keystore) Juan123
 
 
 dentro de la carpeta android: 
